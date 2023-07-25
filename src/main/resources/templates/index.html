@@ -1,0 +1,31 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+<section layout:fragment="content">
+  <div class="container-fluid">
+    <div class="row">
+      <img th:src="${@environment.getProperty('app.banner.url')}" class="img-fluid mx-auto m-2" style="max-width: 400px"
+      th:alt="${@environment.getProperty('app.banner.alt')}"/>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col shadow-sm m-2 bg-white rounded" style="padding: 0 !important;">
+        <section th:insert="~{data/leaderboard-table.html}" hx-get="/leaderboard/data"
+                 hx-trigger="load, every 2s">
+        </section>
+      </div>
+
+      <div class="w-100"></div>
+
+      <div style="max-width: 300px;" class="col shadow-sm p-2 m-2 bg-white rounded" th:each="stock: ${stocks}">
+        <canvas th:id="${stock.key}"></canvas>
+      </div>
+
+      <script th:src="@{/webjars/chartjs/dist/chart.umd.js}"></script>
+      <script th:src="@{/js/stocks.js}"></script>
+      <div th:insert="~{data/stock-data.html}" hx-get="/stocks/data" hx-trigger="load, every 4s"></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

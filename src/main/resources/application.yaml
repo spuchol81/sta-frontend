@@ -1,0 +1,49 @@
+app:
+  banner:
+    url: https://d1.awsstatic.com/partner-network/QuickStart/logos/vmware-tanzu-application-platform-logo.e2e1eaa23c5795f062a3f9acfbc567b9ee20be7a.png
+    alt: VMware Tanzu Application Platform
+  marketplace:
+    url: http://localhost:8081
+
+spring:
+  application:
+    name: sta-frontend
+
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    tags:
+      application: ${spring.application.name}
+      service: ${spring.application.name}
+      source: ${spring.application.name}-${random.uuid}
+  tracing:
+    # Set to true to forward tracing spans to a local Zipkin instance.
+    enabled: false
+    sampling:
+      probability: 0.1
+  otlp:
+    metrics:
+      export:
+        # Set to true to forward metrics to a local OpenTelemetry collector.
+        enabled: false
+        step: 30s
+logging:
+  pattern:
+    # Include tracing ids in log entries.
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+
+---
+
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+server:
+  forward-headers-strategy: native

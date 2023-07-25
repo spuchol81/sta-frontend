@@ -1,0 +1,38 @@
+<table class="leaderboard table table-hover user-select-none align-middle mx-auto">
+  <thead class="table-light">
+  <tr>
+    <th class="leaderboard-rank text-end text-secondary">#</th>
+    <th class="leaderboard-user text-secondary">User</th>
+    <th class="leaderboard-equities text-end text-secondary">Equities</th>
+    <th class="leaderboard-balance text-end text-secondary">Balance</th>
+  </tr>
+  </thead>
+  <tbody th:if="${leaderboard == null || leaderboard.entries().isEmpty()}" class="leaderboard-empty">
+  <tr>
+    <td colspan="4" class="text-center">No entries yet!</td>
+  </tr>
+  </tbody>
+  <tbody th:if="${leaderboard != null}">
+  <tr th:each="entry: ${leaderboard.entries}">
+    <td class="leaderboard-rank text-end"
+        th:text="${#numbers.formatInteger(entryStat.index + 1, 1, 'DEFAULT')}"></td>
+    <td class="leaderboard-user text-truncate text-nowrap">
+      <img onerror="this.onerror=null; this.src='/images/profile-icon.png'"
+           th:src="${'/users/' + entry.user + '/avatar'}" type="image/png"
+           width="32" height="32" th:alt="'Avatar for ' + ${entry.user}" class="img-thumbnail"/>
+      <span th:text="${entry.user}"><</span>
+    </td>
+    <td class="leaderboard-equities text-end"
+        th:text="${#numbers.formatDecimal(entry.equities, 1, 'DEFAULT', 0, 'DEFAULT')}"></td>
+    <td class="leaderboard-balance text-end"
+        th:text="${#numbers.formatDecimal(entry.balance, 1, 'DEFAULT', 0, 'DEFAULT')}"></td>
+  </tr>
+  </tbody>
+  <tfoot th:if="${leaderboard != null}">
+  <tr>
+    <td colspan="4" class="small text-center text-secondary">
+      Last updated: <span th:text="${@dateTimeFormatter.format(leaderboard.updateTime)}">now</span>
+    </td>
+  </tr>
+  </tfoot>
+</table>

@@ -1,0 +1,32 @@
+apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+kind: ConfigurationSource
+metadata:
+  name: sta-frontend-config
+spec:
+  backends:
+  - type: git
+    uri: https://github.com/alexandreroman/sta-config
+    defaultLabel: main
+    searchPaths:
+    - sta
+    - sta-frontend
+---
+apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+kind: ConfigurationSlice
+metadata:
+  name: sta-frontend-config
+spec:
+  interval: 30s
+  configurationSource: sta-frontend-config
+  content:
+  - application/default
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaim
+metadata:
+  name: sta-frontend-config
+spec:
+  ref:
+    apiVersion: config.apps.tanzu.vmware.com/v1alpha4
+    kind: ConfigurationSlice
+    name: sta-frontend-config

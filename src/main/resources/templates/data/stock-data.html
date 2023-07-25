@@ -1,0 +1,5 @@
+<script type="text/javascript" th:inline="javascript" th:each="stock: ${stocks}">
+    createStockChart([[${stock.key}]], [[${stock.key.toUpperCase()}]],
+        [[${stock.value}]]
+    );
+</script>

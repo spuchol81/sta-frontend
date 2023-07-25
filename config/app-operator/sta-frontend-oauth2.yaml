@@ -1,0 +1,16 @@
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: sta-frontend-oauth2
+spec:
+  classRef:
+    name: sso
+  parameters:
+    workloadRef:
+      name: sta-frontend
+    clientAuthenticationMethod: client_secret_basic
+    authorizationGrantTypes:
+    - client_credentials
+    scopes:
+    - name: frontend
+    requireUserConsent: false

@@ -1,0 +1,50 @@
+.navbar-brand img {
+  margin-bottom: 2px;
+}
+
+.navbar-brand {
+  font-size: 90% !important;
+}
+
+.navbar-text {
+  font-size: 70% !important;
+}
+
+.github-fork-ribbon:before {
+  background-color: black;
+}
+
+td.leaderboard-rank {
+  font-size: 160% !important;
+}
+
+tbody tr:first-child td {
+  color: goldenrod !important;
+  font-size: 110%;
+  font-weight: bold;
+}
+
+tbody td {
+  color: #888 !important;
+}
+
+tfoot {
+  border-bottom: white 0px !important;
+}
+
+.leaderboard-rank {
+  width: 10%;
+}
+
+.leaderboard-user {
+  width: 50%;
+  max-width: 200px;
+}
+
+.leaderboard-tx {
+  width: 10%;
+}
+
+.leaderboard-balance, .leaderboard-equities {
+  width: 30%;
+}
