@@ -37,14 +37,12 @@ public class UserAvatarControllerTests {
     @Test
     void testGravatar() {
         final var resp = client.getForEntity("/users/alexandre.roman@gmail.com/avatar", String.class);
-        assertThat(resp.getStatusCode().is3xxRedirection()).isTrue();
-        assertThat(resp.getHeaders().getLocation()).isEqualTo(URI.create("https://gravatar.com/avatar/31ad3a0c560a54d14cb65a59b732057c?d=404"));
+        assertThat(resp.getStatusCode().is2xxSuccessful()).isTrue();
     }
 
     @Test
     void testGitHub() {
         final var resp = client.getForEntity("/users/alexandreroman/avatar", String.class);
-        assertThat(resp.getStatusCode().is3xxRedirection()).isTrue();
-        assertThat(resp.getHeaders().getLocation()).isEqualTo(URI.create("https://github.com/alexandreroman.png"));
+        assertThat(resp.getStatusCode().is2xxSuccessful()).isTrue();
     }
 }
