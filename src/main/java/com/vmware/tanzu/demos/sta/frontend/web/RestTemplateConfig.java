@@ -46,7 +46,7 @@ class RestTemplateConfig {
                                             @Value("${app.marketplace.url}") String marketplaceUrl,
                                             @Autowired(required = false) RestTemplateRequestCustomizer<ClientHttpRequest> oauth2Customizer) {
         final var okhttpClient = new OkHttpClient.Builder()
-                .connectTimeout(Duration.ofSeconds(30))
+                .connectTimeout(Duration.ofSeconds(60))
                 .readTimeout(Duration.ofSeconds(30))
                 .build();
         final var reqFactory = new OkHttp3ClientHttpRequestFactory(okhttpClient);
