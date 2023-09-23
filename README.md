@@ -1,56 +1,100 @@
-# Awesome Spring Boot Frontend
+# Spring Trading App :: Frontend
 
-This template relies on [Spring Boot](https://spring.io/projects/spring-boot)
-to serve a [Bootstrap](https://getbootstrap.com/) backed UI,
-including [OpenTelemetry](https://opentelemetry.io/) support.
+> [!NOTE]
+> This is one of many components from
+> [Spring Trading App](https://github.com/alexandreroman/sta).
 
-Using this template, you can create frontend apps in Java with your favorite
-development framework.
-Thanks to [Spring Boot Devtools](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.devtools),
-you can build your app with live reloading: for example you see the result of editing
-CSS/HTML files without having to restart the app.
+This component is the GUI of Spring Trading App.
 
-## Prerequisites
+## Running this component on your workstation
 
-You need the following tools to build and run this app:
-
-- Java Development Kit 17+
-- Maven 3.8+
-- Tanzu CLI
-
-## How to run this app?
-
-Run this command to build and run the app on your workstation:
+Use this command to run this component on your workstation:
 
 ```shell
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
+mvn spring-boot:run -Dspring-boot.run.profiles=dev,secrets
 ```
 
 The app is available at http://localhost:8080.
 
-## How to deploy this app?
+Application configuration is defined in `src/main/resources/application.yaml`.
+You may want to override this configuration in
+`src/main/resources/application-dev.yaml`:
 
-Run this command to deploy this app to your developer namespace:
+```yaml
+app:
+  banner:
+    url: https://d1.awsstatic.com/partner-network/QuickStart/logos/vmware-tanzu-application-platform-logo.e2e1eaa23c5795f062a3f9acfbc567b9ee20be7a.png
+    alt: VMware Tanzu Application Platform
+  marketplace:
+    url: http://localhost:8081
+```
+
+You also need to set up authentication credentials in order to connect
+to the Marketplace API.
+
+Create the file `src/main/resources/application-secrets.yaml`:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          sso:
+            client-id: insert-client-id
+            client-secret: insert-client-secret
+            authorization-grant-type: client_credentials
+            scope:
+            - frontend
+        provider:
+          sso:
+            issuer-uri: https://login.sso.az.run.withtanzu.com
+```
+
+Those OAuth2 credentials must be created beforehand.
+
+When using the OAuth2 Resource Server from Tanzu Application Platform, you
+can generate such credentials by creating a `ClientRegistration` entity:
+
+```yaml
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClientRegistration
+metadata:
+  name: sta-frontend
+spec:
+  authServerSelector:
+    matchLabels:
+      sso.apps.tanzu.vmware.com/env: run
+  authorizationGrantTypes:
+  - client_credentials
+  clientAuthenticationMethod: client_secret_basic
+  requireUserConsent: false
+```
+
+OAuth2 credentials are available in a Kubernetes `Secret`.
+
+## Deploying with VMware Tanzu Application Platform
+
+Use this command to deploy this component to your favorite Kubernetes cluster:
 
 ```shell
 tanzu apps workload apply -f config/workload.yaml
 ```
 
-## How to enable/disable OpenTelemetry?
+The platform will take care of building, testing and deploying this component.
 
-OpenTelemetry support is included in this app.
-Depending on what you need, you may want to enable/disable OpenTelemetry.
+This component also loads some configuration from a
+[Git repository](https://github.com/alexandreroman/sta-config).
 
-Edit the file [`src/main/resources/application.yaml`](src/main/resources/application.yaml):
+Run this command to create a Kubernetes `Secret` out of this Git repository,
+which will be used by the component at runtime:
 
-```yaml
-management:
-  tracing:
-    # Set to true to forward tracing spans to a local Zipkin instance.
-    enabled: false
-  otlp:
-    metrics:
-      export:
-        # Set to true to forward metrics to a local OpenTelemetry collector.
-        enabled: false
+```shell
+kubectl apply -f config/app-operator
+```
+
+Run this command to get deployment status:
+
+```shell
+tanzu apps workload get sta-frontend
 ```
