@@ -2,6 +2,8 @@ app:
   banner:
     url: https://d1.awsstatic.com/partner-network/QuickStart/logos/vmware-tanzu-application-platform-logo.e2e1eaa23c5795f062a3f9acfbc567b9ee20be7a.png
     alt: VMware Tanzu Application Platform
+    #expirationDate: 2023-09-29T18:00:00+08:00
+    expirationDate:
   marketplace:
     url: http://localhost:8081
 

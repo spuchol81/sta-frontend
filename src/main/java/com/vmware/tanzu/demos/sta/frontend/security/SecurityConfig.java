@@ -48,7 +48,7 @@ class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         final var publicUrls = new String[]{
                 // Page views.
-                "/", "/leaderboard", "/leaderboard/data", "/users/**", "/stocks/data",
+                "/", "/leaderboard", "/leaderboard/data", "/users/**", "/stocks/data", "/banner/data",
                 "/next",
                 // Default page for errors.
                 "/error",

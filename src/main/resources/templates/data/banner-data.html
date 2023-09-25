@@ -1,0 +1,21 @@
+<section class="row my-3">
+  <img th:src="${@environment.getProperty('app.banner.url')}" class="img-fluid mx-auto m-3" style="max-width: 400px"
+       th:alt="${@environment.getProperty('app.banner.alt')}"/>
+  <div th:if="${expirationDuration}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() >= 1}">
+      The contest will close in <span th:text="${expirationDuration.toDays()}"></span> day(s)!
+    </p>
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() >= 1}">
+      The contest will close in <span th:text="${expirationDuration.toHours()}"></span> hour(s)!
+    </p>
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() == 0 && expirationDuration.toMinutes() > 3}">
+      The contest will close in <span th:text="${expirationDuration.toMinutes()}"></span> minute(s)!
+    </p>
+    <p class="text-center font-monospace text-bg-light fw-bold text-danger p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toSeconds() > 0 && expirationDuration.toSeconds() < 180}">
+     <span th:text="${expirationDuration.toSeconds()}"></span> second(s) remaining!
+    </p>
+    <p class="text-center font-monospace text-bg-light fw-bold text-success p-2" th:if="${expirationDuration.toSeconds() <= 0}">
+      The contest is closed!
+    </p>
+  </div>
+</section>
