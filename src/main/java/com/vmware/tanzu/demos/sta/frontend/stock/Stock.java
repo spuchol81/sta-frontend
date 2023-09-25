@@ -16,8 +16,6 @@
 
 package com.vmware.tanzu.demos.sta.frontend.stock;
 
-import java.util.List;
-
 record Stock(
         String symbol
 ) {

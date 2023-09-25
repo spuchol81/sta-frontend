@@ -20,8 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.io.IOException;
-
 @Controller
 class LeaderboardController {
     private final LeaderboardService leaderboardService;
