@@ -2,19 +2,19 @@
   <img th:src="${@environment.getProperty('app.banner.url')}" class="img-fluid mx-auto m-3" style="max-width: 400px"
        th:alt="${@environment.getProperty('app.banner.alt')}"/>
   <div th:if="${expirationDuration}">
-    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() >= 1}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2 rounded-pill" th:if="${expirationDuration.toDays() >= 1}">
       The contest will end in <span th:text="${expirationDuration.toDays()}"></span> days!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() > 1}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2 rounded-pill" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() > 1}">
       The contest will end in <span th:text="${expirationDuration.toHours()}"></span> hours!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() <= 1 && expirationDuration.toMinutes() > 3}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2 rounded-pill" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() <= 1 && expirationDuration.toMinutes() > 3}">
       The contest will end in <span th:text="${expirationDuration.toMinutes()}"></span> minutes!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-danger p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toSeconds() > 0 && expirationDuration.toMinutes() <= 3}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-danger p-2 rounded-pill" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toSeconds() > 0 && expirationDuration.toMinutes() <= 3}">
      <span th:text="${expirationDuration.toSeconds()}"></span> seconds remaining!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-success p-2" th:if="${expirationDuration.toSeconds() <= 0}">
+    <p class="text-center font-monospace text-bg-light fw-bold text-success p-2 rounded-pill" th:if="${expirationDuration.toSeconds() <= 0}">
       The contest is now closed!
     </p>
   </div>
