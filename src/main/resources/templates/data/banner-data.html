@@ -3,19 +3,19 @@
        th:alt="${@environment.getProperty('app.banner.alt')}"/>
   <div th:if="${expirationDuration}">
     <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() >= 1}">
-      The contest will close in <span th:text="${expirationDuration.toDays()}"></span> day(s)!
+      The contest will end in <span th:text="${expirationDuration.toDays()}"></span> days!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() >= 1}">
-      The contest will close in <span th:text="${expirationDuration.toHours()}"></span> hour(s)!
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() > 1}">
+      The contest will end in <span th:text="${expirationDuration.toHours()}"></span> hours!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() == 0 && expirationDuration.toMinutes() > 3}">
-      The contest will close in <span th:text="${expirationDuration.toMinutes()}"></span> minute(s)!
+    <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toHours() <= 1 && expirationDuration.toMinutes() > 3}">
+      The contest will end in <span th:text="${expirationDuration.toMinutes()}"></span> minutes!
     </p>
-    <p class="text-center font-monospace text-bg-light fw-bold text-danger p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toSeconds() > 0 && expirationDuration.toSeconds() < 180}">
-     <span th:text="${expirationDuration.toSeconds()}"></span> second(s) remaining!
+    <p class="text-center font-monospace text-bg-light fw-bold text-danger p-2" th:if="${expirationDuration.toDays() == 0 && expirationDuration.toSeconds() > 0 && expirationDuration.toMinutes() <= 3}">
+     <span th:text="${expirationDuration.toSeconds()}"></span> seconds remaining!
     </p>
     <p class="text-center font-monospace text-bg-light fw-bold text-success p-2" th:if="${expirationDuration.toSeconds() <= 0}">
-      The contest is closed!
+      The contest is now closed!
     </p>
   </div>
 </section>
