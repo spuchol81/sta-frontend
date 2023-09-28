@@ -10,6 +10,8 @@ app:
 spring:
   application:
     name: sta-frontend
+  jackson:
+    time-zone: Europe/Paris
 
 management:
   metrics:

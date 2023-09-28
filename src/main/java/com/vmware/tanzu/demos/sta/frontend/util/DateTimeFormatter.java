@@ -16,16 +16,24 @@
 
 package com.vmware.tanzu.demos.sta.frontend.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
 @Component
 public class DateTimeFormatter {
+    private final ZoneId zoneId;
+
+    DateTimeFormatter(@Value("${spring.jackson.time-zone}") String z) {
+        this.zoneId = ZoneId.of(z);
+    }
+
     public String format(ZonedDateTime t) {
-        final var df = java.time.format.DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.FULL).withLocale(Locale.US);
+        final var df = java.time.format.DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.LONG).withLocale(Locale.US).withZone(zoneId);
         return df.format(t);
     }
 }
