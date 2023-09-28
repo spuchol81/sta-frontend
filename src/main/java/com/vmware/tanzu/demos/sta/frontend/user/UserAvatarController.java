@@ -18,8 +18,10 @@ package com.vmware.tanzu.demos.sta.frontend.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -45,9 +48,26 @@ class UserAvatarController {
         this.client = client;
     }
 
+    private static String avatarEtag(String user) {
+        return DigestUtils.md5DigestAsHex(user.getBytes(StandardCharsets.UTF_8));
+    }
+
     @GetMapping("/users/{user}/avatar")
-    ResponseEntity<?> userAvatar(@PathVariable("user") String user) {
+    ResponseEntity<?> userAvatar(@PathVariable("user") String user, WebRequest req) {
+        final var etag = avatarEtag(user);
+        if (req.checkNotModified(etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+
         var avatar = avatarCache.get(user);
+        if (avatar != null && avatar.getPath().equals("/images/profile-icon.png")) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.IMAGE_PNG)
+                    .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)).cachePublic())
+                    .eTag(etag)
+                    .body(new InputStreamResource(getClass().getResourceAsStream("/static/images/profile-icon.png")));
+        }
+
         if (avatar == null) {
             if (user.contains("@")) {
                 // Build a Gravatar URL to get a user profile picture.
@@ -75,8 +95,8 @@ class UserAvatarController {
             avatarCache.put(user, avatar);
         }
         return ResponseEntity.status(HttpStatus.FOUND)
-                .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)))
-                .eTag(DigestUtils.md5DigestAsHex(user.getBytes(StandardCharsets.UTF_8)))
+                .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)).cachePublic())
+                .eTag(etag)
                 .location(avatar).build();
     }
 
