@@ -18,6 +18,7 @@ package com.vmware.tanzu.demos.sta.frontend.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.DigestUtils;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -73,6 +75,8 @@ class UserAvatarController {
             avatarCache.put(user, avatar);
         }
         return ResponseEntity.status(HttpStatus.FOUND)
+                .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)))
+                .eTag(DigestUtils.md5DigestAsHex(user.getBytes(StandardCharsets.UTF_8)))
                 .location(avatar).build();
     }
 
