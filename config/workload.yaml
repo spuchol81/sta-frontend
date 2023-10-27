@@ -2,11 +2,12 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: sta-frontend
+  annotations:
+    autoscaling.knative.dev/min-scale: "1"
   labels:
     apps.tanzu.vmware.com/workload-type: web
     apps.tanzu.vmware.com/has-tests: "true"
     app.kubernetes.io/part-of: sta-frontend
-    networking.knative.dev/visibility: cluster-local
 spec:
   source:
     git:

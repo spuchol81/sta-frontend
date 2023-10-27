@@ -12,5 +12,5 @@ spec:
     authorizationGrantTypes:
     - client_credentials
     scopes:
-    - name: frontend
+    - name: bid
     requireUserConsent: false
