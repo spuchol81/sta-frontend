@@ -1,6 +1,7 @@
 <section class="row my-3">
-  <img th:src="${@environment.getProperty('app.banner.url')}" class="img-fluid mx-auto m-3" style="max-width: 800px"
+  <img th:src="${@environment.getProperty('app.banner.url')}" class="img-fluid mx-auto m-3" style="max-width: 650px"
        th:alt="${@environment.getProperty('app.banner.alt')}"/>
+  <!--
   <div th:if="${expirationDuration}">
     <p class="text-center font-monospace text-bg-light fw-bold text-warning p-2 rounded-pill" th:if="${expirationDuration.toDays() >= 1}">
       The contest will end in <span th:text="${expirationDuration.toDays()}"></span> days!
@@ -18,4 +19,5 @@
       The contest is now closed!
     </p>
   </div>
+  -->
 </section>
